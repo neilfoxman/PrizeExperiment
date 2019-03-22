@@ -13,20 +13,40 @@ using namespace std;
 class Experiment {
     public:
     
-    int number;
+    
+    int _prizeBoxNumber;
+    int _firstPick;
+    bool _switchBoxes;
+    bool won = false;
 
-    Experiment(){
+
+
+    Experiment(bool switchBoxes){
+        _switchBoxes = switchBoxes;
         srand(time(0));
-        generateRandom();
     }
 
-    void generateRandom(){
+    void runExperiment(){
         // https://www.daniweb.com/programming/software-development/threads/1769/c-random-numbers#
-        number = rand()%3;
+        _prizeBoxNumber = rand()%3;
+        _firstPick = rand()%3;
+        if(_firstPick == _prizeBoxNumber){
+            won = true;
+        }
+        else{
+            won = false;
+        }
+
+        
     }
 
-    void printNumber(){
-        cout << number << "\n";
+    void printExperiment(){
+        cout << "prizeBoxNumber=" << _prizeBoxNumber << " ";
+        cout << "firstPick=" << _firstPick << " ";
+        if(won){
+            cout << "WON";
+        }
+        cout << "\n";
     }
 };
 
@@ -53,27 +73,19 @@ int main (int argc, char** argv) {
     }
 
     cout << "\nRunning...\n";
-    int results[numExperiments];
-    Experiment e1;
+    bool results[numExperiments];
+    Experiment e1(false);
     for (int i=0; i<numExperiments; i++){
-        e1.generateRandom();
-        //e1.printNumber();
-        results[i] = e1.number;
+        e1.runExperiment();
+        results[i] = e1.won;
+        e1.printExperiment();
     }
 
-
-    // printf("\nResults:\n");
-    // for(int i=0; i<numExperiments; i++){
-    //     cout << results[i] << "\n";
-    // }
-
-    cout << "\nCounts:\n";
+    cout << "\nCount up wins...\n";
     // http://www.cplusplus.com/reference/algorithm/count/
-    for(int i=0; i <=2; i++){
-        int mycount = std::count (results, results+numExperiments, i);
-        float percentage = (float)mycount/(float)numExperiments;
-        cout << "Count of " << i << " was " << mycount << ". Percentage: " << percentage << "\n";
-    }
+    int mycount = std::count (results, results+numExperiments, true);
+    float percentage = (float)mycount/(float)numExperiments;
+    cout << "Win Count was " << mycount << ". Percentage: " << percentage << "\n";
 
 
     return 0;
