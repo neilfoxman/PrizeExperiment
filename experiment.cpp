@@ -71,7 +71,8 @@ int main (int argc, char** argv) {
     // http://www.cplusplus.com/reference/algorithm/count/
     for(int i=0; i <=2; i++){
         int mycount = std::count (results, results+numExperiments, i);
-        cout << "Count of " << i << " was " << mycount << "\n";
+        float percentage = (float)mycount/(float)numExperiments;
+        cout << "Count of " << i << " was " << mycount << ". Percentage: " << percentage << "\n";
     }
 
 
